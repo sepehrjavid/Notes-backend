@@ -6,6 +6,6 @@ app_name = "accounting"
 
 urlpatterns = [
     path('signup', UserSignUpView.as_view()),
-    path('retrieveUpdate', UserRetrieveView.as_view()),
+    path('retrieve', UserRetrieveView.as_view()),
     path('passwordChange', UserPasswordChangeView.as_view()),
 ]

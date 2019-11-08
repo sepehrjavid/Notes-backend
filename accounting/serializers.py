@@ -44,6 +44,7 @@ class UserPasswordChangeSerializer(serializers.Serializer):
     confirmPassword = serializers.CharField(style={'input_type': 'password'}, max_length=90)
 
     def validate(self, attrs):
+        print(self.context)
         user = self.context.get("request").user
         if not user.check_password(attrs.get("currentPassword")):
             raise ValidationError("wrong password")

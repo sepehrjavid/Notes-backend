@@ -2,6 +2,7 @@ import requests
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -23,10 +24,11 @@ class UserRetrieveView(RetrieveAPIView):
 
 class UserPasswordChangeView(APIView):
     serializer_class = UserPasswordChangeSerializer
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         user = self.request.user
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data, context={"request": self.request})
         if serializer.is_valid():
             user.set_password(serializer.validated_data.get("password"))
             user.save()

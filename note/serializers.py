@@ -20,8 +20,9 @@ class NoteSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "date",)
 
     def validate(self, attrs):
-        category = Category.objects.filter(id=self.context.get("view").kwargs.get("category_pk"))
-        if not category.exists():
-            raise ValidationError("category does not exist")
-        attrs["category"] = category.first()
+        if self.context.get("request").method.lower() == "post":
+            category = Category.objects.filter(id=self.context.get("view").kwargs.get("category_pk"))
+            if not category.exists():
+                raise ValidationError("category does not exist")
+            attrs["category"] = category.first()
         return attrs
