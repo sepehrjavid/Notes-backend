@@ -5,14 +5,20 @@ from category.models import Category
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    count = serializers.SerializerMethodField()
+
     class Meta:
         model = Category
         fields = [
             "id",
             "name",
+            "count"
         ]
 
         read_only_fields = ("id",)
+
+    def get_count(self, obj):
+        return obj.notes.count()
 
     def validate(self, attrs):
         request = self.context.get("request")
